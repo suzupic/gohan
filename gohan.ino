@@ -1,83 +1,81 @@
-// #include <Servo.h> // For Servo MOTOR
+// For Servo Motor
+#include <Servo.h> 
+
+// For Adafuruit Motor Shield
+#include <Wire.h>
+#include <Adafruit_MotorShield.h>
+#include "utility/Adafruit_PWMServoDriver.h"
 
 // For Motor
-//// ch.A for Right Motor
-#define RightMotor_Direction    12
-#define RightMotor_PWM          3
-#define RightMotor_Brake        9
-//// ch.A for Left Motor
-#define LeftMotor_Direction     13
-#define LeftMotor_PWM           11
-#define LeftMotor_Brake         8
+// Create the motor shield object with the default I2C address
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+// Or, create it with a different I2C address (say for stacking)
+
+// Select which 'port' M1, M2
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(1);    // M1
+Adafruit_DCMotor *leftMotor  = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
-#define Range_Trig  2
-#define Range_Echo  4
-float duration, distance = 0;   // distance[cm]
+int rangeTrig = 2;
+int rangeEcho = 4;
+double duration, distance = 0;   // distance[cm]
 
-/*
 // For Servo moter
-Servo servomoter;
-int pos;
-#define ServoPin  6
-*/
+Servo arm;
+int position;
+int servoPin = 10;  // Servo 1 in MotorShield 
 
 void setup(){
-    
-    // Setup Channel A
-    pinMode(RightMotor_Direction, OUTPUT);
-    pinMode(RightMotor_Brake, OUTPUT);
 
-    // Setup Channel B
-    pinMode(LeftMotor_Direction, OUTPUT);
-    pinMode(LeftMotor_Brake, OUTPUT);
+    AFMS.begin();  // create with the default frequency 1.6KHz
 
     // Setup Ultrasonic Ranging Module
-    pinMode(Range_Trig, OUTPUT);
-    pinMode(Range_Echo, INPUT);
+    pinMode(rangeTrig, OUTPUT);
+    pinMode(rangeEcho, INPUT);
     
     // Setup Servo moter
-    pinMode(ServoPin, OUTPUT);
-    servo.attach(ServoPin);    // 9 pin to servo
+    pinMode(servoPin, OUTPUT);
+    arm.attach(servoPin);    // 9 pin to servo
+
+}
 
 // Moter Functions 
 void forword(){
-    // Motor A
-    digitalWrite(RightMotor_Direction, HIGH);
-    digitalWrite(RightMotor_Brake, LOW);
-    analogWrite(RightMotor_PWM, 255);
-    // Motor B
-    digitalWrite(LeftMotor_Direction, HIGH);
-    digitalWrite(LeftMotor_Brake, LOW);
-    analogWrite(LeftMotor_PWM, 255);
+
+    rightMotor->setSpeed(50);
+    leftMotor->setSpeed(50);
+
+    rightMotor->run(FORWARD);
+    leftMotor->run(FORWARD);
+
 }
 
 // turn right
 void turn(){
-    // Motor A
-    digitalWrite(RightMotor_Direction, HIGH);
-    digitalWrite(RightMotor_Brake, LOW);
-    analogWrite(RightMotor_PWM, 120);
-    // Motor B
-    digitalWrite(LeftMotor_Direction, LOW);
-    digitalWrite(LeftMotor_Brake, LOW);
-    analogWrite(LeftMotor_PWM, 120);
+
+    rightMotor->setSpeed(50);
+    leftMotor->setSpeed(50);
+
+    rightMotor->run(FORWARD);
+    leftMotor->run(BACKWARD);
+
 }
 
 void stop(){
-    // Motor A & B
-    digitalWrite(RightMotor_Brake, HIGH);
-    digitalWrite(LeftMotor_Brake, HIGH);
+
+    rightMotor->setSpeed(0);
+    leftMotor->setSpeed(0);
+
 }
 
 // Ranging Functions
 void ranging(){
-    digitalWrite(Range_Trig, HIGH);
+    digitalWrite(rangeTrig, HIGH);
     // Need HIGH pulse of 2 microsec or more 
-    delayMicroseconds(2);
-    digitalWrite(Range_Trig, LOW);
+    delayMicroseconds(10);
+    digitalWrite(rangeEcho, LOW);
     
-    duration = pulseIn(Range_Echo, HIGH);
+    duration = pulseIn(rangeEcho, HIGH);
     
     // convert pluse to cm
     distance = (duration / 2) / 29.1;
@@ -88,7 +86,7 @@ void loop(){
   
     ranging();
 
-    if (distance >= 5 || distance <= 0){
+    if (distance >= 3.0 || distance <= 0){
         forword();
     }
     else {
