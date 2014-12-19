@@ -4,7 +4,7 @@
 // For Adafuruit Motor Shield
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
-#include "utility/Adafruit_PWMServoDriver.h"
+// #include "utility/Adafruit_PWMServoDriver.h"
 
 // For Motor
 // Create the motor shield object with the default I2C address
@@ -16,34 +16,69 @@ Adafruit_DCMotor *rightMotor = AFMS.getMotor(1);    // M1
 Adafruit_DCMotor *leftMotor  = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
-int rangeTrig = 2;
-int rangeEcho = 4;
-double duration, distance = 0;   // distance[cm]
+int trigPin = 6;
+int echoPin = 7;
 
 // For Servo moter
 Servo arm;
 int position;
 int servoPin = 10;  // Servo 1 in MotorShield 
 
+int LED = 13;
+
 void setup(){
 
     AFMS.begin();  // create with the default frequency 1.6KHz
+    rightMotor->setSpeed(0);
+    leftMotor->setSpeed(0);
+
+    Serial.begin (9600);
 
     // Setup Ultrasonic Ranging Module
-    pinMode(rangeTrig, OUTPUT);
-    pinMode(rangeEcho, INPUT);
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
     
     // Setup Servo moter
     pinMode(servoPin, OUTPUT);
     arm.attach(servoPin);    // 9 pin to servo
 
+    pinMode(LED, OUTPUT);
+
+}
+
+// Main 
+void loop(){
+  
+    double distance = 0;
+
+    distance = range();
+    
+    if (distance >= 400 || distance <= 0){
+        Serial.println("Out of range");
+    }
+    else {
+        Serial.print(distance);
+        Serial.println(" cm");
+    }
+
+    if (distance >= 5.5){
+        Forward();
+        digitalWrite(LED, HIGH);
+    }
+    else {
+        AllStop();
+        digitalWrite(LED, LOW);
+    }
+
+    delay(500);
+
 }
 
 // Moter Functions 
-void forword(){
+void Forward(){
 
-    rightMotor->setSpeed(50);
-    leftMotor->setSpeed(50);
+    rightMotor->setSpeed(80);
+    leftMotor->setSpeed(80);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -51,46 +86,35 @@ void forword(){
 }
 
 // turn right
-void turn(){
+void Turn(){
 
-    rightMotor->setSpeed(50);
-    leftMotor->setSpeed(50);
+    rightMotor->setSpeed(80);
+    leftMotor->setSpeed(80);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
 }
 
-void stop(){
+void AllStop(){
 
     rightMotor->setSpeed(0);
     leftMotor->setSpeed(0);
 
+    rightMotor->run(RELEASE);
+    leftMotor->run(RELEASE);
+
 }
 
 // Ranging Functions
-void ranging(){
-    digitalWrite(rangeTrig, HIGH);
-    // Need HIGH pulse of 2 microsec or more 
+double range() {
+    double duration, distance;
+    digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
-    digitalWrite(rangeEcho, LOW);
-    
-    duration = pulseIn(rangeEcho, HIGH);
-    
-    // convert pluse to cm
-    distance = (duration / 2) / 29.1;
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH);
+    distance = (duration/2) / 29.1;
+
+    return distance;
 }
 
-// Main 
-void loop(){
-  
-    ranging();
-
-    if (distance >= 3.0 || distance <= 0){
-        forword();
-    }
-    else {
-        stop();
-    }
-
-}
