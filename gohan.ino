@@ -12,8 +12,8 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Or, create it with a different I2C address (say for stacking)
 
 // Select which 'port' M1, M2
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);    // M1
-Adafruit_DCMotor *rightMotor  = AFMS.getMotor(2);    // M2
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);     // M1
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
 const int trigPin = 6;
@@ -116,9 +116,8 @@ void Turn(){
     while(distance < 120.0){
         distance = range();
 
-        Serial.println("Turn: ");
         Serial.print(distance);
-        Serial.println(" cm");
+        Serial.println(" cm (Turn)");
 
         rightMotor->setSpeed(35);
         leftMotor->setSpeed(35);
