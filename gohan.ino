@@ -49,9 +49,10 @@ void setup(){
     arm.attach(servoPin);    // 9 pin to servo
 
     pinMode(buttunPin, INPUT);
+    resetVelocity();
 
     pinMode(LED, OUTPUT);
-
+    digitalWrite(LED, LOW);
 }
 
 // Main 
@@ -71,27 +72,36 @@ void loop(){
         Serial.println(" cm");
     }
     
-    if (distance < 25.0 && wallCount == 0){
-        while(distance < 15.0){
+    if (distance < 40.0 && wallCount == 0){
+        while(distance < 50.0){
+        digitalWrite(LED, HIGH);
         AllStop();
         distance = range();
         }
         wallCount++;
     }
 
-    else if (distance < 15.0 && wallCount < 2){
+    else if (distance < 11.0 && wallCount < 2){
+        digitalWrite(LED, HIGH);
         Turn();
-        digitalWrite(LED, LOW);
         wallCount++;
     }
 
-    else if (distance < 15.0){
+    else if (distance < 20.0 && wallCount == 2){
+        digitalWrite(LED, HIGH);
         AllStop();
+        servoArm();
+        wallCount++;
+    }
+
+    else if (distance < 17.0){
+        AllStop();
+        digitalWrite(LED, LOW);
     }
 
     else {
         Forward();
-        digitalWrite(LED, HIGH);
+        digitalWrite(LED, LOW);
     }
 
 
@@ -101,7 +111,7 @@ void loop(){
 void Forward(){
 
     rightMotor->setSpeed(60);
-    leftMotor->setSpeed(60);
+    leftMotor->setSpeed(61);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -111,13 +121,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(35);
-    leftMotor->setSpeed(35);
+    rightMotor->setSpeed(30);
+    leftMotor->setSpeed(30);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1415);
+    delay(1185);
 
 }
 
@@ -142,3 +152,20 @@ double range() {
 
     return distance;
 }
+
+// For Servo motor Arm
+void servoArm() {
+    int i;
+    AllStop();
+
+    for(i=90; i>85; i--){
+        arm.write(i);
+        delay(100);
+    }
+}
+
+// reset servo arm
+void resetVelocity(){
+    arm.write(90);
+}
+
