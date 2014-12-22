@@ -71,7 +71,7 @@ void loop(){
         Serial.println(" cm");
     }
     
-    if (distance < 15.0 && wallCount == 0){
+    if (distance < 25.0 && wallCount == 0){
         while(distance < 15.0){
         AllStop();
         distance = range();
@@ -79,7 +79,7 @@ void loop(){
         wallCount++;
     }
 
-    else if (distance < 15.0 && wallCount < 10){
+    else if (distance < 15.0 && wallCount < 2){
         Turn();
         digitalWrite(LED, LOW);
         wallCount++;
@@ -88,6 +88,7 @@ void loop(){
     else if (distance < 15.0){
         AllStop();
     }
+
     else {
         Forward();
         digitalWrite(LED, HIGH);
@@ -110,21 +111,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    double distance;
-    distance = range();
+    rightMotor->setSpeed(35);
+    leftMotor->setSpeed(35);
 
-    while(distance < 120.0){
-        distance = range();
+    rightMotor->run(FORWARD);
+    leftMotor->run(BACKWARD);
 
-        Serial.print(distance);
-        Serial.println(" cm (Turn)");
-
-        rightMotor->setSpeed(35);
-        leftMotor->setSpeed(35);
-
-        rightMotor->run(BACKWARD);
-        leftMotor->run(FORWARD);
-    }
+    delay(1415);
 
 }
 
