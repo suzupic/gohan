@@ -16,15 +16,16 @@ Adafruit_DCMotor *rightMotor = AFMS.getMotor(1);    // M1
 Adafruit_DCMotor *leftMotor  = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
-int trigPin = 6;
-int echoPin = 7;
+const int trigPin = 6;
+const int echoPin = 7;
 
 // For Servo moter
 Servo arm;
 int position;
-int servoPin = 10;  // Servo 1 in MotorShield 
+const int servoPin = 10;  // Servo 1 in MotorShield 
 
 int LED = 13;
+
 
 void setup(){
 
@@ -49,10 +50,13 @@ void setup(){
 // Main 
 void loop(){
   
+    int Wall_Count = 0;
+    int Start_Flag = 0;
     double distance = 0;
 
     distance = range();
-    
+
+    /*
     if (distance >= 400 || distance <= 0){
         Serial.println("Out of range");
     }
@@ -60,14 +64,17 @@ void loop(){
         Serial.print(distance);
         Serial.println(" cm");
     }
+    */
 
-    if (distance >= 5.5){
-        Forward();
-        digitalWrite(LED, HIGH);
-    }
-    else {
+
+    if (distance < 10.5){
         AllStop();
         digitalWrite(LED, LOW);
+    }
+
+    else if (distance >= 10.5){
+        Forward();
+        digitalWrite(LED, HIGH);
     }
 
     delay(500);
@@ -77,8 +84,8 @@ void loop(){
 // Moter Functions 
 void Forward(){
 
-    rightMotor->setSpeed(80);
-    leftMotor->setSpeed(80);
+    rightMotor->setSpeed(60);
+    leftMotor->setSpeed(60);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -88,8 +95,8 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(80);
-    leftMotor->setSpeed(80);
+    rightMotor->setSpeed(7);
+    leftMotor->setSpeed(7);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
