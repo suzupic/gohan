@@ -24,6 +24,10 @@ Servo arm;
 int position;
 const int servoPin = 10;  // Servo 1 in MotorShield 
 
+// For Start or Stop Buttun
+const int buttunPin = 11;
+int buttonState = 0;
+
 int LED = 13;
 
 
@@ -43,6 +47,8 @@ void setup(){
     pinMode(servoPin, OUTPUT);
     arm.attach(servoPin);    // 9 pin to servo
 
+    pinMode(buttunPin, INPUT);
+
     pinMode(LED, OUTPUT);
 
 }
@@ -51,7 +57,6 @@ void setup(){
 void loop(){
   
     int Wall_Count = 0;
-    int Start_Flag = 0;
     double distance = 0;
 
     distance = range();
@@ -66,18 +71,15 @@ void loop(){
     }
     */
 
-
     if (distance < 10.5){
         AllStop();
         digitalWrite(LED, LOW);
     }
 
-    else if (distance >= 10.5){
+    else (distance >= 10.5){
         Forward();
         digitalWrite(LED, HIGH);
     }
-
-    delay(500);
 
 }
 
@@ -124,4 +126,3 @@ double range() {
 
     return distance;
 }
-
