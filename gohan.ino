@@ -12,8 +12,8 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Or, create it with a different I2C address (say for stacking)
 
 // Select which 'port' M1, M2
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);    // M1
-Adafruit_DCMotor *rightMotor  = AFMS.getMotor(2);    // M2
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);     // M1
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
 const int trigPin = 6;
@@ -29,6 +29,7 @@ const int buttunPin = 11;
 int buttonState = 0;
 
 int LED = 13;
+int wallCount = 0;
 
 
 void setup(){
@@ -56,12 +57,12 @@ void setup(){
 // Main 
 void loop(){
   
-    int Wall_Count = 0;
     double distance = 0;
+    Serial.print(wallCount);
+    Serial.println(" wall count");
 
     distance = range();
 
-    /*
     if (distance >= 400 || distance <= 0){
         Serial.println("Out of range");
     }
@@ -69,17 +70,30 @@ void loop(){
         Serial.print(distance);
         Serial.println(" cm");
     }
-    */
-
-    if (distance < 10.5){
+    
+    if (distance < 25.0 && wallCount == 0){
+        while(distance < 15.0){
         AllStop();
-        digitalWrite(LED, LOW);
+        distance = range();
+        }
+        wallCount++;
     }
 
-    else (distance >= 10.5){
+    else if (distance < 15.0 && wallCount < 2){
+        Turn();
+        digitalWrite(LED, LOW);
+        wallCount++;
+    }
+
+    else if (distance < 15.0){
+        AllStop();
+    }
+
+    else {
         Forward();
         digitalWrite(LED, HIGH);
     }
+
 
 }
 
@@ -97,11 +111,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(7);
-    leftMotor->setSpeed(7);
+    rightMotor->setSpeed(35);
+    leftMotor->setSpeed(35);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
+
+    delay(1415);
 
 }
 
