@@ -28,7 +28,13 @@ const int servoPin = 10;  // Servo 1 in MotorShield
 const int buttunPin = 11;
 int buttonState = 0;
 
+// 
+const int ssmFinish = 3;    // "ssm" mean "susumu-kun" 
+
+// show status
 int LED = 13;
+
+// other 
 int wallCount = 0;
 
 
@@ -39,6 +45,9 @@ void setup(){
     leftMotor->setSpeed(0);
 
     Serial.begin (9600);
+
+    // Setup H8 Program Finish
+    pinMode(ssmFinish, INPUT);
 
     // Setup Ultrasonic Ranging Module
     pinMode(trigPin, OUTPUT);
@@ -87,7 +96,7 @@ void loop(){
         wallCount++;
     }
 
-    else if (distance < 20.0 && wallCount == 2){
+    else if (distance < 20.0 && wallCount == 2 && digitalRead(ssmFinish)==HIGH){
         digitalWrite(LED, HIGH);
         AllStop();
         servoArm();
