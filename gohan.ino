@@ -96,7 +96,7 @@ void loop(){
         wallCount++;
     }
 
-    else if (distance < 20.0 && wallCount == 2 && digitalRead(ssmFinish)==HIGH){
+    else if (distance < 25.0 && wallCount == 2 && digitalRead(ssmFinish)==HIGH){
         digitalWrite(LED, HIGH);
         AllStop();
         servoArm();
@@ -119,8 +119,8 @@ void loop(){
 // Moter Functions 
 void Forward(){
 
-    rightMotor->setSpeed(60);
-    leftMotor->setSpeed(61);
+    rightMotor->setSpeed(80);
+    leftMotor->setSpeed(81);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -130,13 +130,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(30);
-    leftMotor->setSpeed(30);
+    rightMotor->setSpeed(40);
+    leftMotor->setSpeed(40);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1185);
+    delay(1050);
 
 }
 
