@@ -83,15 +83,13 @@ void loop(){
     
     if (distance < 40.0 && wallCount == 0){
         while(distance < 50.0){
-        digitalWrite(LED, HIGH);
         AllStop();
         distance = range();
         }
         wallCount++;
     }
 
-    else if (distance < 11.0 && wallCount < 2){
-        digitalWrite(LED, HIGH);
+    else if (distance < 18.0 && wallCount < 2){
         Turn();
         wallCount++;
     }
@@ -103,7 +101,7 @@ void loop(){
         wallCount++;
     }
 
-    else if (distance < 17.0){
+    else if (distance < 20.0){
         AllStop();
         digitalWrite(LED, LOW);
     }
@@ -119,8 +117,8 @@ void loop(){
 // Moter Functions 
 void Forward(){
 
-    rightMotor->setSpeed(60);
-    leftMotor->setSpeed(61);
+    rightMotor->setSpeed(80);
+    leftMotor->setSpeed(82);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -130,13 +128,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(30);
-    leftMotor->setSpeed(30);
+    rightMotor->setSpeed(40);
+    leftMotor->setSpeed(40);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1185);
+    delay(1200);
 
 }
 
