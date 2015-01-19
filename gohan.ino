@@ -118,7 +118,7 @@ void loop(){
 void Forward(){
 
     rightMotor->setSpeed(80);
-    leftMotor->setSpeed(81);
+    leftMotor->setSpeed(82);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -134,7 +134,7 @@ void Turn(){
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1100);
+    delay(1200);
 
 }
 
