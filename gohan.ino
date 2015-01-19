@@ -128,13 +128,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(40);
-    leftMotor->setSpeed(40);
+    rightMotor->setSpeed(47);
+    leftMotor->setSpeed(47);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1200);
+    delay(1220);
 
 }
 
@@ -165,7 +165,7 @@ void servoArm() {
     int i;
     AllStop();
 
-    for(i=90; i>85; i--){
+    for(i=90; i>30; i--){
         arm.write(i);
         delay(100);
     }
