@@ -120,9 +120,11 @@ void loop(){
             servoArm();
             wallCount++;
         }
-
-        digitalWrite(LED, HIGH);
-        AllStop();
+        
+        else {
+            digitalWrite(LED, HIGH);
+            AllStop();
+        }
     }
 
     else if (distance < 35.0){
@@ -161,7 +163,7 @@ void Turn(){
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1050);
+    delay(1030);
 
 }
 
