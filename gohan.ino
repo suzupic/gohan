@@ -12,7 +12,7 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Or, create it with a different I2C address (say for stacking)
 
 // Select which 'port' M1, M2
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);     // M1
+Adafruit_DCMotor *leftMotor  = AFMS.getMotor(1);    // M1
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);    // M2
 
 // For Ranging (HC-SR04)
@@ -22,20 +22,22 @@ const int echoPin = 7;
 // For Servo moter
 Servo arm;
 int position;
-const int servoPin = 10;  // Servo 1 in MotorShield 
+const int servoPin = 9;  // Servo 2 in MotorShield 
 
 // For Start or Stop Buttun
-const int buttunPin = 11;
-int buttonState = 0;
+// const int buttunPin = 11;
+// int buttonState = 0;
 
-// 
-const int ssmFinish = 3;    // "ssm" mean "susumu-kun" 
+// H8 to Arduino
+const int ssmStatusPin = 2;    // "ssm" mean "susumu-kun" 
+int susumuStatus;
 
 // show status
-int LED = 13;
+const int LED = 13;
 
 // other 
 int wallCount = 0;
+int noiseCount = 0;
 
 
 void setup(){
@@ -44,71 +46,96 @@ void setup(){
     rightMotor->setSpeed(0);
     leftMotor->setSpeed(0);
 
-    Serial.begin (9600);
+    // Serial.begin (9600);
 
     // Setup H8 Program Finish
-    pinMode(ssmFinish, INPUT);
+    pinMode(ssmStatusPin, INPUT);
 
     // Setup Ultrasonic Ranging Module
     pinMode(trigPin, OUTPUT);
     pinMode(echoPin, INPUT);
-    
+
     // Setup Servo moter
     pinMode(servoPin, OUTPUT);
-    arm.attach(servoPin);    // 9 pin to servo
+    arm.attach(servoPin);   // 9 pin to servo
 
-    pinMode(buttunPin, INPUT);
-    resetVelocity();
+    // pinMode(buttunPin, INPUT);
 
     pinMode(LED, OUTPUT);
     digitalWrite(LED, LOW);
+
+    resetVelocity();
 }
 
 // Main 
 void loop(){
-  
+
     double distance = 0;
-    Serial.print(wallCount);
-    Serial.println(" wall count");
+
+    OUT:
+    
+    // Serial.print(wallCount);
+    // Serial.println(" wall count");
 
     distance = range();
+    susumuStatus = digitalRead(ssmStatusPin);
 
-    if (distance >= 400 || distance <= 0){
-        Serial.println("Out of range");
-    }
-    else {
-        Serial.print(distance);
-        Serial.println(" cm");
-    }
-    
-    if (distance < 40.0 && wallCount == 0){
-        while(distance < 50.0){
-        AllStop();
-        distance = range();
+    // if (distance >= 400 || distance <= 0){
+    //     Serial.println("Out of range");
+    // }
+    // else {
+    //     Serial.print(distance);
+    //     Serial.println(" cm");
+    // }
+
+    if (distance < 60.0 && wallCount == 0){
+        while(distance < 40.0){
+            AllStop();
+            distance = range();
+            resetVelocity();
+            delay(5);
         }
         wallCount++;
     }
 
-    else if (distance < 18.0 && wallCount < 2){
+    else if (distance < 22.0 && wallCount < 2){
+
+        if (noiseCount < 30) {
+            noiseCount++;
+            goto OUT;
+        }
+
         Turn();
         wallCount++;
     }
 
-    else if (distance < 20.0 && wallCount == 2 && digitalRead(ssmFinish)==HIGH){
+    else if (distance < 35.0 && wallCount == 2 ){
+
+        if (noiseCount < 30) {
+            noiseCount++;
+            goto OUT;
+        }
+
+        else if (digitalRead(ssmStatusPin) == HIGH){
+            servoArm();
+            wallCount++;
+        }
+
         digitalWrite(LED, HIGH);
         AllStop();
-        servoArm();
-        wallCount++;
     }
 
-    else if (distance < 20.0){
+    else if (distance < 35.0){
         AllStop();
         digitalWrite(LED, LOW);
+        noiseCount = 0;
     }
 
     else {
         Forward();
         digitalWrite(LED, LOW);
+        noiseCount = 0;
+        resetVelocity();
     }
 
 
@@ -118,7 +145,7 @@ void loop(){
 void Forward(){
 
     rightMotor->setSpeed(80);
-    leftMotor->setSpeed(82);
+    leftMotor->setSpeed(84);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -128,13 +155,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(40);
-    leftMotor->setSpeed(40);
+    rightMotor->setSpeed(43);
+    leftMotor->setSpeed(43);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1200);
+    delay(1050);
 
 }
 
@@ -150,7 +177,9 @@ void AllStop(){
 
 // Ranging Functions
 double range() {
+
     double duration, distance;
+
     digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
@@ -158,21 +187,21 @@ double range() {
     distance = (duration/2) / 29.1;
 
     return distance;
+
 }
 
 // For Servo motor Arm
 void servoArm() {
-    int i;
-    AllStop();
 
-    for(i=90; i>85; i--){
-        arm.write(i);
-        delay(100);
-    }
+    arm.write(120);
+    delay(5000);
+    resetVelocity();
+
 }
 
 // reset servo arm
 void resetVelocity(){
-    arm.write(90);
-}
 
+    arm.write(90);
+
+}
