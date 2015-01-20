@@ -29,7 +29,7 @@ const int servoPin = 9;  // Servo 2 in MotorShield
 // int buttonState = 0;
 
 // H8 to Arduino
-const int ssmStatusPin = 2;    // "ssm" mean "susumu-kun" 
+const int ssmStatusPin = 3;    // "ssm" mean "susumu-kun" 
 int susumuStatus;
 
 // show status
@@ -78,7 +78,7 @@ void loop(){
     // Serial.println(" wall count");
 
     distance = range();
-    susumuStatus = digitalRead(ssmStatusPin);
+    // susumuStatus = digitalRead(ssmStatusPin);
 
     // if (distance >= 400 || distance <= 0){
     //     Serial.println("Out of range");
