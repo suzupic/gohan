@@ -163,7 +163,7 @@ void Turn(){
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1030);
+    delay(1130);
 
 }
 
