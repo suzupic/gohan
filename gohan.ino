@@ -146,8 +146,8 @@ void loop(){
 // Moter Functions 
 void Forward(){
 
-    rightMotor->setSpeed(80);
-    leftMotor->setSpeed(84);
+    rightMotor->setSpeed(84);
+    leftMotor->setSpeed(86);
 
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
@@ -157,13 +157,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(43);
-    leftMotor->setSpeed(43);
+    rightMotor->setSpeed(49);
+    leftMotor->setSpeed(49);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1100);
+    delay(1260);
 
 }
 
