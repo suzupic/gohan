@@ -109,7 +109,7 @@ void loop(){
         wallCount++;
     }
 
-    else if (distance < 35.0 && wallCount == 2 ){
+    else if (distance < 41.0 && wallCount == 2 ){
 
         if (noiseCount < 30) {
             noiseCount++;
@@ -157,13 +157,13 @@ void Forward(){
 // turn right
 void Turn(){
 
-    rightMotor->setSpeed(49);
-    leftMotor->setSpeed(49);
+    rightMotor->setSpeed(51);
+    leftMotor->setSpeed(51);
 
     rightMotor->run(FORWARD);
     leftMotor->run(BACKWARD);
 
-    delay(1260);
+    delay(1300);
 
 }
 
