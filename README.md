@@ -1,7 +1,7 @@
 gohan (Arduinoロボット)
 ==========  
 
-[gohan and susumu]
+![gohan and susumu](https://github.com/akinorihomma/gohan/blob/master/images/gohan_and_susumu.jpg)
 
 はじめに
 ----------
@@ -49,6 +49,7 @@ GitHub上から見ている人は問題ないです
 の **3冠を達成. 相談にのってもらった各先生やTAの方, 他の班のPLの方に感謝です.**
 なにより **我がチーム** とH8 側のプログラムを作成した **コアプログラマには深い感謝します.**
 競争だから情報はクローズドにするのではなく, 競争相手でも協力するべきだと実験を通して痛感しました.  
+!(billboard)[https://github.com/akinorihomma/gohan/blob/master/images/linetrace_billboard.jpg]
 
 ### 2015年1月21日  
 主要プログラムの開発終了  
