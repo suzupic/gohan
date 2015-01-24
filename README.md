@@ -18,9 +18,21 @@ F班
 もっとも, 実験終了後は次年度の参考資料になればと思っています.  
 実験の相談にも乗りますのでメールやPull Requestなどをくれれば, 相談にものります.
 
-### 関係者各位(班員とか後輩とか)
-Markdown記述しているので, テキストエディタでもいいけど対応エディタ推奨  
-GitHub上から見ている人は問題ないです
+### 関係者各位(後輩とか)
+**情報系を目指している人にも Arduino はマイコンを理解する上でとても役にたちます.**  
+今年度(H26)以降はどのような実験になるか分かりませんが, 自前で Arduino を買っても損はありません.  
+
+Arduino の開発環境はとても優しいものです.  
+今回の学生実験を通して, **実感した**メリットは以下のとおり
++ Java Runtime Environment が動作する環境ならば OS を問わない
++ サンプルスケッチ(プログラム)が豊富
++ コンパイルから転送まで簡単
++ shield(シールド)で簡単に機能を追加
++ シールドを使用せずにモータードライバなどの論理ICも使用可能
++ Android 端末との連携も可能(今回はできなかったけど)
++ [Processing](https://processing.org/) と連携による数値のグラフ化
+
+来年度も Arduino を使うといいなぁ...
 
 機能の概要
 ----------
@@ -124,6 +136,7 @@ H8 の ch2 10番ポートは ```P4.DR.BIT.P5``` に該当します.
 GitHub のように **fork** すると手間が省けますし, なによりも 0 から作るよりも今の時代は重要です.  
 
 3D版のGitHub的な存在, [www.thingiverse.com](http://www.thingiverse.com) からモデルを拝借しました.  
+どちらもライセンスは CC-BY-SA です.  
 
 **gohan にArduinoをマウントするために使用**  
 Arduino Uno Mounter:   http://www.thingiverse.com/thing:625018  
@@ -139,8 +152,5 @@ LICENSE
 [MIT License](http://ja.wikipedia.org/wiki/MIT_License), hell yeah!  
 わかりやすく言うと, 「ご自由にお使いください」  
 でも免責は負いませんからというものです.  
-
-**ただし 3D モデルで使用したマウントとスペーサーのライセンスは CC-BY-SA です. **  
-
 
 Copyright (c) 2014 calendaaaaar
