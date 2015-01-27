@@ -2,6 +2,8 @@
 #include <Servo.h> 
 
 // For Adafuruit Motor Shield
+//// ライブラリはここからダウンロード
+//// https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library
 #include <Wire.h>   // Adafruit_MotorShield.h を使うために必要
 #include <Adafruit_MotorShield.h>
 // #include "utility/Adafruit_PWMServoDriver.h"
