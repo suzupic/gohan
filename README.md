@@ -52,6 +52,10 @@ Arduino の開発環境はとても優しいものです.
 + 距離センサ(HC-SR04)
 + サーボモータ  
 
+また Adafruit Motor Shield Kit v2.0 を使用するにあたり,  
+使用したライブラリは以下のものを使用しました.
+(https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library)[https://github.com/adafruit/Adafruit_Motor_Shield_V2_Library]
+
 進捗状況
 ----------
 
@@ -149,8 +153,14 @@ Arduino Uno Mounter:   http://www.thingiverse.com/thing:625018
 
 LICENSE
 ----------
-[MIT License](http://ja.wikipedia.org/wiki/MIT_License), hell yeah!  
-わかりやすく言うと, 「ご自由にお使いください」  
-でも免責は負いませんからというものです.  
+[MIT License](http://ja.wikipedia.org/wiki/MIT_License)  
+端的に言えば, 「ご自由にお使いください」  
+でも免責は負いません.  
+
+ただし, Adafruit Industry の Adafruit_Motor_Shield_V2_Library は  
+Adafruit Industry 社の著作物であり, BSD ライセンスのもとにあります.  
+
+詳細URLは LICENSE に記載してあります.
+
 
 Copyright (c) 2014 calendaaaaar
